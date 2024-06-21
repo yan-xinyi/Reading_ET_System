@@ -52,7 +52,7 @@ The experiment needs to be conducted on Google Chrome. To allow the browser to t
 ③ Enter the username and password received to log in and enter the platform's homepage.
 
 <div align=center>
-  <img src="https://github.com/yan-xinyi/images/blob/main/ET_AKE/list.png" width="80%" alt="Figure 2: Home page"><br>
+  <img src="https://github.com/yan-xinyi/images/blob/main/ET_AKE/list.png" width="95%" alt="Figure 2: Home page"><br>
   <b>Figure 2: Home page</b><br>
 </div>
 
@@ -60,7 +60,7 @@ The experiment needs to be conducted on Google Chrome. To allow the browser to t
 Users can refer to the “System Usage Instructions” on the left side of the homepage for unclear parts of the experiment process, or they can ask the experiment administrators.
 
 <div align=center>
-  <img src="https://github.com/yan-xinyi/images/blob/main/ET_AKE/notice.png" width="80%" alt="Figure 3: Experiment description interface"><br>
+  <img src="https://github.com/yan-xinyi/images/blob/main/ET_AKE/notice.png" width="90%" alt="Figure 3: Experiment description interface"><br>
   <b>Figure 3: Experiment description interface</b><br>
 </div>
 
@@ -86,7 +86,17 @@ After clicking the reading icon, the platform will conduct two calibrations sequ
 **Step 6:** Reading the Abstract
 ① After completing the two calibrations, participants will click the “Start Reading” button to enter the formal reading page. During the entire reading process, the user's eye-tracking behavior will be recorded in the database.
 
+<div align=center>
+  <img src="https://github.com/yan-xinyi/images/blob/main/ET_AKE/check2.png" width="80%" alt="Figure 5: Second Calibration Page"><br>
+  <b>Figure 5: Second Calibration Page</b><br>
+</div>
+
 To further improve accuracy, participants should use the mouse to follow their fixation points during reading. Participants can switch between sentences as needed during reading.
 ② When reaching the last sentence, clicking “Next Page” again will jump to the verification question page as follows. Participants need to select the most suitable keyword for the abstract from three options and submit their answer. After the page prompts that the save is successful, click the “Return to Task List” link at the bottom of the page to return to the homepage.
+
+<div align=center>
+  <img src="https://github.com/yan-xinyi/images/blob/main/ET_AKE/read.png" width="80%" alt="Figure 6: Read page"><br>
+  <b>Figure 6: Read page</b><br>
+</div>
 
 ❗ Note: The verification question only has one submission opportunity, and repeated submissions will not be recorded in the database. Participants should read the abstract carefully and answer the question earnestly.
