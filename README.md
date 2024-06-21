@@ -45,14 +45,24 @@ The experiment needs to be conducted on Google Chrome. To allow the browser to t
 ② The page after entering the platform is as follows:
 
 <div align=center>
-<b>Figure 1: Login page</b><br>
-  <img src="https://github.com/yan-xinyi/images/blob/main/ET_AKE/login.png" width="80%" alt="Table 1: Table of details of 10 subjects"><br>
+  <img src="https://github.com/yan-xinyi/images/blob/main/ET_AKE/login.png" width="80%" alt="Figure 1: Login page"><br>
+  <b>Figure 1: Login page</b><br>
 </div>
 
 ③ Enter the username and password received to log in and enter the platform's homepage.
 
+<div align=center>
+  <img src="https://github.com/yan-xinyi/images/blob/main/ET_AKE/list.png" width="80%" alt="Figure 2: Home page"><br>
+  <b>Figure 2: Home page</b><br>
+</div>
+
 **Step 3:** Instructions for Using the Reading System
 Users can refer to the “System Usage Instructions” on the left side of the homepage for unclear parts of the experiment process, or they can ask the experiment administrators.
+
+<div align=center>
+  <img src="https://github.com/yan-xinyi/images/blob/main/ET_AKE/notice.png" width="80%" alt="Figure 3: Experiment description interface"><br>
+  <b>Figure 3: Experiment description interface</b><br>
+</div>
 
 **Step 4:** Selecting a Task for Reading
 Return to the “Reading Task List,” select “Unread,” choose any task from the list, and click the reading icon on the right to start reading.
@@ -62,6 +72,11 @@ Return to the “Reading Task List,” select “Unread,” choose any task from
 **Step 5:** Calibration Before Reading
 After clicking the reading icon, the platform will conduct two calibrations sequentially to ensure the user meets the experimental requirements.
 ① The first calibration page is as follows. The system needs to ensure successful camera call and accurate facial and facial feature recognition. Experiment participants need to wait for the page to show the recognized face, ensure their face is facing the camera and the green outline accurately identifies their facial features, and then click the blue button. After confirming their facial position on this page, participants should keep their head and facial positions fixed until the reading of the task (abstract) is completed.
+
+<div align=center>
+  <img src="https://github.com/yan-xinyi/images/blob/main/ET_AKE/check1.png" width="80%" alt="Figure 4: First Calibration Page"><br>
+  <b>Figure 4: First Calibration Page</b><br>
+</div>
 
 ❗ Note: If Google Chrome is not properly set up, the following warning will pop up on this step's page. Do not continue the experiment and contact the experiment administrators for adjustments.
 
