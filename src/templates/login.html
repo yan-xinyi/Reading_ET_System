@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="zh" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>用户阅读眼动数据采集平台</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/highlight/styles/styles.css">
+
+</head>
+
+
+</body>
+<body>
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';color:#000000">
+    <h1>Reading Eye Movement Data Collection Platform</h1>
+    <br/><br/>
+    <div class="container-fluid">
+        <div class="bg-light">
+            <div class="container bg-secondary text-white" style = "background-color:darkseagreen">
+                <h2>Welcome</h2>
+                <form class="form" method="post" action="{{url_for('use_login')}}">
+				    <input name="user_id" type="text" placeholder="Username">
+				    <input name="user_pwd" type="password" placeholder="Password">
+				<button type="submit" id="login-button">Login</button>
+			</form>
+            </div>
+        </div>
+    </div>
+    <br/><br/><br/>
+    <!--Footer area-->
+    <div class="text-center">
+        <p>E-mail：yuwq@njust.edu.cn</p>
+        <p>Adress: No. 200 Xiaolingwei Street, Nanjing, Jiangsu Province</p>
+    </div>
+</div>
+
+</body>
+
+
+<script type="text/javascript">
+
+    if("{{state}}"!= ""){
+	    alert("{{state}}");
+    }
+</script>
+</html>

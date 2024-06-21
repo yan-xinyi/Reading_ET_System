@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/highlight/styles/styles.css">
+
+</head>
+
+
+</body>
+<body>
+<style >
+.radio {
+  margin: 2rem;
+}
+.radio input[type=radio] {
+  position: absolute;
+  opacity: 0;
+}
+.radio input[type=radio] + .radio-label:before {
+  content: "";
+  background: #f4f4f4;
+  border-radius: 100%;
+  border: 1px solid #b4b4b4;
+  display: inline-block;
+  width: 1.4em;
+  height: 1.4em;
+  position: relative;
+  top: -0.2em;
+  margin-right: 1em;
+  vertical-align: top;
+  cursor: pointer;
+  text-align: center;
+  transition: all 250ms ease;
+}
+.radio input[type=radio]:checked + .radio-label:before {
+  background-color: #3197EE;
+  box-shadow: inset 0 0 0 4px #f4f4f4;
+}
+.radio input[type=radio]:focus + .radio-label:before {
+  outline: none;
+  border-color: #3197EE;
+}
+.radio input[type=radio]:disabled + .radio-label:before {
+  box-shadow: inset 0 0 0 4px #f4f4f4;
+  border-color: #b4b4b4;
+  background: #b4b4b4;
+}
+.radio input[type=radio] + .radio-label:empty:before {
+  margin-right: 0;
+}
+.radio-label{
+    font-size:18px;
+}
+
+
+.button.blue{
+    width:100px; height:40px;
+    border:1px solid #1e7db9;
+    box-shadow: 0 1px 2px #8fcaee inset,0 -1px 0 #497897 inset,0 -2px 3px #8fcaee inset;
+    background: -webkit-linear-gradient(top,#42a4e0,#2e88c0);
+    background: -moz-linear-gradient(top,#42a4e0,#2e88c0);
+    background: linear-gradient(top,#42a4e0,#2e88c0);
+}
+</style>
+
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';color:#000000">
+    <h2>Please answer the following verification questions carefully:</h2>
+    <br/><br/>
+    <div class="container-fluid">
+        <div class="bg-light">
+            <div class="container bg-secondary text-white" style = "background-color:lightblue">
+                <h2>Please select the most likely keywords from the following options for this abstract: (Multiple choice)</h2>
+                <div class  = "content">
+                    <div class="radio">
+                        <input id="option1" name="radio" type="radio" value="0" >
+                        <label for="option1" class="radio-label">{{options_datas.options[0]}}</label>
+                    </div>
+                    <div class="radio">
+                        <input id="option2" name="radio" type="radio" VALUE="1"  >
+                        <label for="option2" class="radio-label">{{options_datas.options[1]}}</label>
+                    </div>
+                    <div class="radio">
+                        <input id="option3" name="radio" type="radio" value="2">
+                        <label for="option3" class="radio-label">{{options_datas.options[2]}}</label>
+                    </div>
+                </div>
+                <button type="submit" class="small blue button" id="answer_btn">Submit</button>
+            </div>
+            <a id = "return" class="btn btn-info" href="{{url_for('index_page')}}">Return to task list</a>
+        </div>
+    </div>
+    <br/><br/><br/>
+    <!--Footer area-->
+    <div class="text-center">
+        <p>E-mail：yuwq@njust.edu.cn</p>
+        <p>Adress: No. 200 Xiaolingwei Street, Nanjing, Jiangsu Province</p>
+    </div>
+</div>
+
+</body>
+
+
+<script type="text/javascript">
+// Submit Page Information
+$(document).ready(function(){
+
+
+    //Click the Submit button to get the clicked options
+	$("#answer_btn").click(function() {
+        //Get options for the selected radio
+        var option = $("input[name = 'radio']:checked").val();
+        //Corresponds the value to the content of the option
+        option = parseInt(option);
+        //Stores data in the database and goes to the reading list
+        $.ajax({
+            "type": "POST",
+            "async": true,
+            "url": "{{url_for('save_answer')}}",
+            "dataType": "json",
+            "data": {
+                "a_id": "{{options_datas.a_id}}",
+                "u_id": "{{options_datas.u_id}}",
+                "options":"{{options_datas.options}}",
+                "answer_index":  JSON.stringify(option)
+            },
+            success: function (result) {
+                alert("Save successfully");
+            }
+        });
+    });
+
+
+	});
+</script>
+
+</html>

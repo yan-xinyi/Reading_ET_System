@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/echarts/5.2.1/echarts.min.js"></script>
+</head>
+<body>
+<script>
+//The function needs to return back-end data including a_id and u_id to determine the corresponding task and recorded eye information.
+//$(document).ready(function(){
+function reset(){
+   alert(1);
+}
+
+//});
+</script>
+
+
+
+<!--topographic region-->
+<div class="container-fluid">
+    <!--Top Navigation Bar-->
+    <nav class="navbar navbar-expand-md bg-white row">
+        <a class="navbar-brand text-dark" href="#" style="margin-left: 15px">Reading Eye Movement Data Collection Platform</a>
+        <span class="text-dark col-2 offset-6" href="#" style="margin-right: -30px">Welcome {{session['user_id']}} </span>
+        <a class="text-dark col-1" href="{{url_for('logout')}}" style="margin-right: -30px">Log out</a>
+    </nav>
+</div>
+
+<!--Content area-->
+<div class="container-fluid">
+    <div class="row">
+        <!--Toolbar Options-->
+        <div class="col-2 bg-light" style="padding: 0">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs flex-column" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#home">task management</a>
+            </li>
+          </ul>
+        </div>
+        <!--Detailed area-->
+        <div class="col-10">
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <!--List of mandates-->
+            <div id="home" class="container-fluid tab-pane active" style="padding: 0">
+              <div class="card">
+                  <div class="card-header">
+                      <div class="row">
+                          <div class="col-sm-2"><h5>Reading task list</h5></div>
+                          <div class="col-sm-3"></div>
+                          <div class="col-sm-7 text-right">
+                               <form class="form-inline float-right" style="margin: 0; padding: 0"
+                                     action="{{url_for('admin_page')}}" method="get">
+<!--                                <input type="hidden" name="show" value="query">-->
+<!--                                <input class="form-control" type="text" placeholder="Search" name="queryStr">-->
+<!--                                <button class="btn btn-success" type="submit">&nbsp;&nbsp;retrieval&nbsp;&nbsp;</button>-->
+<!--                                   -->
+                                <a href="{{url_for('admin_page')}}?show=true&curr_page=1">Completed</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="{{url_for('admin_page')}}?show=false&curr_page=1">Incomplete</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="{{url_for('admin_page')}}?show=all&curr_page=1">All</a>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+
+
+                  <div class="card-body" id="task_list" style="padding: 0">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>Task Number</th>
+                            <th>Article ID</th>
+                            <th>User ID</th>
+                            <th>Article title</th>
+                            <th>Begin Time</th>
+                            <th>During Time</th>
+                            <th>Read</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in re_datas.datalist %}
+                              <tr>
+                                {% for item in data %}
+                                  <td style="word-wrap: break-word">{{item}}</td>
+                                {% endfor %}
+<!--                                  If the reading time item is empty, it shows incomplete-->
+                                {% if data[4] == None %}
+                                  <td>Incomplete</td>
+                                {% else %}
+<!--                                  If the reading time is not empty, display a button to click to clear the related records（Task Table和eyedata）-->
+<!--                                  <td><button type="button" class="btn btn-primary" id="_reset_btn" οnclick="reset(this.type)" type = "{{data}}">重置</button></td>-->
+                                  <td><button type="button" class="btn btn-primary" id="reset_btn" >Reset Task</button></td>
+                                {% endif %}
+                              </tr>
+                            {% endfor%}
+                        </tbody>
+                      </table>
+                  </div>
+              </div>
+              <script>
+              $(document).ready(function(){
+                 $("#reset_btn").click(function(){
+                    var value = $(this).parent().parent().text();
+                    var valueList = value.split(/[, ， 、 ; \s+]/);
+                    valueTrue = [];
+                    for (i = 0;i<valueList.length;i++){
+                        if(valueList[i] !='' && valueList[i]!='\n'){
+                            valueTrue.push(valueList[i]);
+                        }
+                    }
+                    //alert(valueTrue);get corresponding data
+                    a_id= valueTrue[1];
+                    u_id= valueTrue[2];
+                    //Pass the data to the backend to reset the corresponding data and return to the admin page
+                    $.ajax({
+                        "type": "POST",
+                        "async": true,
+                        "url": "{{url_for('reset_task')}}",
+                        "dataType": "json",
+                        "data": {
+                            "a_id": JSON.stringify(a_id),
+                            "u_id": JSON.stringify(u_id)
+                        },
+                        "success": function(result){
+                            console.log("Reset Sucessful");
+                            alert(result.state);
+                        }
+                    });
+                 });
+              });
+              </script>
+
+
+
+
+
+                <div class="row">
+                    <div class="col-6">
+                        <!--Show previous page-->
+                        {% if re_datas.curr_page == 1 %}
+                        <a class="btn btn-primary text-white" disabled>last page</a>
+                        {% else %}
+                        <a class="btn btn-primary text-white" href="{{url_for('admin_page')}}?show={{re_datas.show}}&curr_page={{re_datas.curr_page-1}}">last page</a>
+                        {% endif %}
+                        <!--Show next page-->
+                        {% if re_datas.curr_page == re_datas.all_pages %}
+                        <a class="btn btn-primary text-white" disabled>next page</a>
+                        {% else %}
+                        <a class="btn btn-primary text-white" href="{{url_for('admin_page')}}?show={{re_datas.show}}&curr_page={{re_datas.curr_page+1}}">next page</a>
+                        {% endif %}
+                        <a class="btn btn-primary text-white" href="{{url_for('admin_page')}}?show={{re_datas.show}}&curr_page=1">first page</a>
+                        <a class="btn btn-primary text-white" href="{{url_for('admin_page')}}?show={{re_datas.show}}&curr_page={{re_datas.all_pages}}">end page</a>
+
+                    </div>
+                    <div class="col-6 text-right">
+                        Current page：{{re_datas.curr_page}} /
+                        PageCount ：{{re_datas.all_pages}} /
+                        Total record：{{re_datas.item_nums}}
+                    </div>
+                </div>
+            </div>
+            <!--Message Notification Page-->
+            <div id="menu2" class="container-fluid tab-pane fade" style="padding: 0">
+               <div class="card">
+                    <div class="card-header">
+                         <div class="row">
+                            <div class="col-sm-2"><h5>Experimental Description</h5></div>
+                         </div>
+                    </div>
+               </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+<br/>
+<!--footer area-->
+<div class="text-center">
+	<p>E-mail：yuwq@njust.edu.cn</p>
+    <p>Adress: No. 200 Xiaolingwei Street, Nanjing, Jiangsu Province</p>
+</div>
+
+
+</script>
+</body>
+</html>

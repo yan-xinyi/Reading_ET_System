@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/echarts/5.2.1/echarts.min.js"></script>
+</head>
+<body>
+<!--Topographic region-->
+<div class="container-fluid">
+    <!--Top Navigation Bar-->
+    <nav class="navbar navbar-expand-md bg-white row">
+        <a class="navbar-brand text-dark" href="#" style="margin-left: 13px">Reading Eye Movement Data Collection Platform</a>
+        <span class="text-dark col-2 offset-5" href="#" style="margin-right: -30px">Welcome {{session['user_id']}} </span>
+        <a class="text-dark col-1" href="{{url_for('logout')}}" style="margin-right: -30px">Log out</a>
+    </nav>
+</div>
+
+<!--Content area-->
+<div class="container-fluid">
+    <div class="row">
+        <!--Toolbar Options-->
+        <div class="col-2 bg-light" style="padding: 0">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs flex-column" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#home">Reading task list</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#menu2">System Instructions</a>
+            </li>
+          </ul>
+        </div>
+        <!--Detailed area-->
+        <div class="col-10">
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <!--List of mission-->
+            <div id="home" class="container-fluid tab-pane active" style="padding: 0">
+              <div class="card">
+                  <div class="card-header">
+                      <div class="row">
+                          <div class="col-sm-2"><h5>Reading task list</h5></div>
+                          <div class="col-sm-3"></div>
+                          <div class="col-sm-7 text-right">
+                               <form class="form-inline float-right" style="margin: 0; padding: 0"
+                                     action="{{url_for('index_page')}}" method="get">
+<!--                                <input type="hidden" name="show" value="query">-->
+<!--                                <input class="form-control" type="text" placeholder="Search" name="queryStr">-->
+<!--                                <button class="btn btn-success" type="submit">&nbsp;&nbsp;检索&nbsp;&nbsp;</button>-->
+<!--                                   -->
+                                <a href="{{url_for('index_page')}}?show=true&curr_page=1">Completed</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="{{url_for('index_page')}}?show=false&curr_page=1">Incomplete</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="{{url_for('index_page')}}?show=all&curr_page=1">All</a>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="card-body" id="task_list" style="padding: 0">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>Task Number</th>
+                            <th>Article ID</th>
+                            <th>Article title</th>
+                            <th>Number of sentences</th>
+                            <th>Estimated time required（min）</th>
+<!--                              {% if re_datas.show == 'true' or re_datas.show == 'lowconsistency' %}-->
+<!--                            <th>Kappa coefficient</th>-->
+<!--                              {% endif %}-->
+                            <th>read time</th>
+                            <th>read</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in re_datas.datalist %}
+                              <tr>
+                                {% for item in data %}
+                                  <td style="word-wrap: break-word">{{item}}</td>
+                                {% endfor %}
+<!--                                  If the reading time item is empty, then click on the icon to pop up already read, not repeatable-->
+                                  {% if data[5] != None %}
+                                  <td>have read</td>
+                                  {% else %}
+                                  <td><a href="{{url_for('check_page')}}?a_id={{data[1]}}&show={{re_datas.show}}&curr_page={{re_datas.curr_page}}">read</a></td>
+                                  {% endif %}
+                              </tr>
+                            {% endfor%}
+                        </tbody>
+                      </table>
+                  </div>
+              </div>
+                <div class="row">
+                    <div class="col-6">
+                    {% if re_datas.queryStr != '' %}
+                        <!--Show previous page-->
+                        {% if re_datas.curr_page == 1 %}
+                        <a class="btn btn-primary text-white" disabled>last page</a>
+                        {% else %}
+                        <a class="btn btn-primary text-white" href="{{url_for('index_page')}}?show={{re_datas.show}}&queryStr={{re_datas.queryStr}}&curr_page={{re_datas.curr_page-1}}">last page</a>
+                        {% endif %}
+                        <!--Show next page-->
+                        {% if re_datas.curr_page == re_datas.all_pages %}
+                        <a class="btn btn-primary text-white" disabled>next page</a>
+                        {% else %}
+                        <a class="btn btn-primary text-white" href="{{url_for('index_page')}}?show={{re_datas.show}}&queryStr={{re_datas.queryStr}}&curr_page={{re_datas.curr_page+1}}">next page</a>
+                        {% endif %}
+                        <a class="btn btn-primary text-white" href="{{url_for('index_page')}}?show={{re_datas.show}}&queryStr={{re_datas.queryStr}}&curr_page=1">first page</a>
+                        <a class="btn btn-primary text-white" href="{{url_for('index_page')}}?show={{re_datas.show}}&queryStr={{re_datas.queryStr}}&curr_page={{re_datas.all_pages}}">end page</a>
+                    {% else %}
+                        <!--Show previous page-->
+                        {% if re_datas.curr_page == 1 %}
+                        <a class="btn btn-primary text-white" disabled>last page</a>
+                        {% else %}
+                        <a class="btn btn-primary text-white" href="{{url_for('index_page')}}?show={{re_datas.show}}&curr_page={{re_datas.curr_page-1}}">last page</a>
+                        {% endif %}
+                        <!--Show next page-->
+                        {% if re_datas.curr_page == re_datas.all_pages %}
+                        <a class="btn btn-primary text-white" disabled>next page</a>
+                        {% else %}
+                        <a class="btn btn-primary text-white" href="{{url_for('index_page')}}?show={{re_datas.show}}&curr_page={{re_datas.curr_page+1}}">next page</a>
+                        {% endif %}
+                        <a class="btn btn-primary text-white" href="{{url_for('index_page')}}?show={{re_datas.show}}&curr_page=1">first page</a>
+                        <a class="btn btn-primary text-white" href="{{url_for('index_page')}}?show={{re_datas.show}}&curr_page={{re_datas.all_pages}}">end page</a>
+                    {% endif %}
+                    </div>
+                    <div class="col-6 text-right">
+                        Current page：{{re_datas.curr_page}} /
+                        PageCount：{{re_datas.all_pages}} /
+                        Total record：{{re_datas.item_nums}}
+                    </div>
+                </div>
+            </div>
+            <!--Message Notification Page-->
+            <div id="menu2" class="container-fluid tab-pane fade" style="padding: 0">
+                <div class="card">
+                    <div class="card-header">
+                         <div class="row">
+                            <div class="col-sm-2"><h5>System Instructions</h5></div>
+                         </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="col-12">
+                        <h6><strong>1. Platform Functions</strong></h6>
+                        <p style="text-indent:2em">The user eye-tracking data collection platform utilizes SearchGazer to record the eye movements of users during natural reading. The platform predicts the coordinates where the user's gaze is focused through a camera, and these coordinates are then used to extract and further analyze eye movement characteristics. The following provides instructions and precautions for using the platform. Please read them carefully.</p>
+                        <hr>
+                        <h6><strong>2. Usage Instructions</strong></h6>
+                        <p style="text-indent:2em"><strong>STEP ONE</strong>：After accessing the platform through the provided link, users will arrive at the login interface (as shown in the following figure). Users should log into the system using the specified account and password.</p>
+                            <div>
+                                <img src="static/imgs/login.png" style="display: block; margin: 0 auto; width: 60%">
+                                <p class="text-center">figure 1：User Login Page</p>
+                            </div>
+                        <p style="text-indent:2em"><strong>STEP TWO</strong>：After logging in, click on the "Usage Instructions" on the left side to enter the system usage instructions page. Users are requested to carefully read and remember the content of this page. Any irregularities in the experiment may lead to a decrease in the credibility of the data. Therefore, it is essential for the experimenters to adhere to the experimental environment and settings throughout the entire data collection process.</p>
+                            <div>
+                                <img src="static/imgs/notice.png" style="display: block; margin: 0 auto; width: 60%">
+                                <p class="text-center">figure 2：Usage Instructions Page</p>
+                            </div>
+                        <p style="text-indent:2em"><strong>STEP THREE</strong>：After returning to the task list page (as shown in the figure below), users can click on the icons on the right side of the task list to select the articles they wish to read.</p>
+                            <div>
+                                <img src="static/imgs/list.png" style="display: block; margin: 0 auto; width: 60%">
+                                <p class="text-center">figure 3：Task List Page</p>
+                            </div>
+                        <p style="text-indent:2em"><strong>STEP FOUR</strong>：After clicking on the reading icon, the user will be directed to calibration page one (as shown in the figure below). This page is designed to ensure that the system can accurately recognize the user's facial features, thus guaranteeing the validity of the data. The user needs to ensure that their face appears in the center of the video and that the system can accurately identify the subject's facial features. Once the requirements are met, the user should click the blue button in the middle of the page.</p>
+                            <div>
+                                <img src="static/imgs/check1.png" style="display: block; margin: 0 auto; width: 60%">
+                                <p class="text-center">figure 4：Calibration Page One</p>
+                            </div>
+                        <p style="text-indent:2em"><strong>STEP FIVE</strong>：After clicking the blue button, the user will proceed to calibration page two (as shown in the figure below). This page calibrates the judgment of eye gaze points through mouse coordinates, further enhancing the accuracy of the system. The user is required to click on each of the nine dots on the page in sequence to complete the second calibration.</p>
+                            <div>
+                                <img src="static/imgs/check2.png" style="display: block; margin: 0 auto; width: 60%">
+                                <p class="text-center">figure 5：Calibration Page One</p>
+                            </div>
+                        <p style="text-indent:2em"><strong>STEP SIX</strong>：After passing the second calibration, the subject clicks "Start Reading" to officially enter the reading page of the selected article (as shown in the figure below). Each time, only one sentence is displayed in the center of the page. After reading a sentence, the subject clicks to proceed to the next one. During each reading task, the page should not be forcibly closed, as this will render the task invalid. Once the last sentence has been read, the subject will be directed to the verification page.</p>
+                            <div>
+                                <img src="static/imgs/read.png" style="display: block; margin: 0 auto; width: 60%">
+                                <p class="text-center">figure 6：Reading Page</p>
+                            </div>
+                        <p style="text-indent:2em"><strong>STEP SEVEN</strong>：After a subject has finished reading a particular summary (task), a question related to the keywords of that summary will be displayed on the page. The subject is required to answer the question carefully as proof of the effectiveness of the reading task. Once the subject has successfully submitted their answer, they can click the "Return to Task List" button below the question to proceed to reading other summaries.</p>
+                            <div>
+                                <img src="static/imgs/question.png" style="display: block; margin: 0 auto; width: 60%">
+                                <p class="text-center">figure 7：Verification Page</p>
+                            </div>
+                        <h6><strong>3. Notes and Precautions</strong></h6>
+                        <p style="text-indent:2em; color: red"><strong>1.</strong>After calibration for each reading task, users should strive to maintain a fixed head position and angle until the completion of the reading task.</p>
+                        <p style="text-indent:2em; color: red"><strong>2.</strong>To ensure the validity of the data, a task should be completed in a single session without pausing or terminating it midway.</p>
+                        <p style="text-indent:2em; color: red"><strong>3.</strong>If a task is mistakenly marked as completed due to an accidental click or other reasons, but the user has not actually completed it, they should communicate with the administrator to reset the task.</p>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+<br/>
+<!--Footer area-->
+<div class="text-center">
+	<p>E-mail：yuwq@njust.edu.cn</p>
+    <p>Adress: No. 200 Xiaolingwei Street, Nanjing, Jiangsu Province</p>
+</div>
+
+
+</script>
+</body>
+</html>
