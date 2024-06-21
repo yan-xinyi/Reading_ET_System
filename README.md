@@ -44,6 +44,11 @@ The experiment needs to be conducted on Google Chrome. To allow the browser to t
 
 ② The page after entering the platform is as follows:
 
+<div align=center>
+<b>Figure 1: Login page</b><br>
+  <img src="https://github.com/yan-xinyi/images/blob/main/ET_AKE/login.png" width="80%" alt="Table 1: Table of details of 10 subjects"><br>
+</div>
+
 ③ Enter the username and password received to log in and enter the platform's homepage.
 
 **Step 3:** Instructions for Using the Reading System
